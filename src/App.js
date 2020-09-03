@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import Result from './components/Result';
 import ColorPicker from './components/ColorPicker';
+import SizeSetting from './components/SizeSetting';
+import Reset from './components/Reset';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       color : 'red',
-      fontSize: 15
+      fontSize: 14
     };
 
     this.onSetColor = this.onSetColor.bind(this);
@@ -20,6 +22,23 @@ class App extends Component {
     });
   }
 
+  onChangeSize = (value) => {
+    //console.log(value);
+    //fontSize >=8 && <= 36    
+      this.setState({
+        fontSize: (this.state.fontSize + value >= 8 && this.state.fontSize + value <= 36) ? this.state.fontSize + value : this.state.fontSize
+      });
+    
+  }
+
+  onSettingDefault = (values) => {
+    //console.log(values);
+    this.setState({
+      color : 'red',
+      fontSize: 14
+    });
+  }
+
   render() {
     return (
       <div className="container mt-50">
@@ -27,20 +46,15 @@ class App extends Component {
           <ColorPicker color = { this.state.color } onReceiveColor = { this.onSetColor } />
 
           <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div className="panel panel-warning">
-              <div className="panel-heading">
-                <h3 className="panel-title">Font size: 15px</h3>
-              </div>
-              <div className="panel-body">
-                <button type="button" className="btn btn-success"> + </button>
-                { " " }
-                <button type="button" className="btn btn-danger">-</button>
-              </div>
-            </div>
-            <button className="btn btn-primary btn-block">Reset</button>
+            <SizeSetting 
+              fontSize = { this.state.fontSize } 
+              onChangeSize = { this.onChangeSize }
+              />
+
+            <Reset onSettingDefault = { this.onSettingDefault } />
           </div>          
-          
-          <Result color = { this.state.color } />
+        
+          <Result color = { this.state.color } fontSize = { this.state.fontSize } />
         </div>
       </div>
     );
